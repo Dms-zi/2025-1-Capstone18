@@ -1,26 +1,13 @@
-# dfov를 사용해 카메라 내부행렬 구하기
-
+# charuco_calibration
 ## 출력 예시
-python dfov2intrinsicK.py  
-원본 해상도 기준 K:  
- [[423.94968   0.      640.        0.     ]  
- [  0.      423.94968 360.        0.     ]   
- [  0.        0.        1.        0.     ]  
- [  0.        0.        0.        1.     ]]  
+python charuco_calibration.py
+   
+Camera Matrix (K):  
+ [[1.42254156e+03 0.00000000e+00 9.58143229e+02]  
+ [0.00000000e+00 1.41923877e+03 5.42381047e+02 ]  
+ [0.00000000e+00 0.00000000e+00 1.00000000e+00]]  
   
   
-리스케일된 K (640x192 기준):  
- [[211.97484    0.       320.         0.      ]  
- [  0.       113.053246  96.         0.      ]  
- [  0.         0.         1.         0.      ]  
- [  0.         0.         0.         1.      ]]  
-
-### 저장된 파일
-origin_intrinsicK.txt  
-rescaled_intrinsicK.txt
-
-
-
 # hfov로 카메라 내부행렬 구하기
 ## 출력 예시
 python hfov2intrinsicK.py

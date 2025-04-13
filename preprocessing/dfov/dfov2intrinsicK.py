@@ -2,7 +2,7 @@ import numpy as np
 
 def compute_K_from_dfov(dfov_deg, width, height):
     """
-    DFOV (대각선 시야각)과 해상도 기준으로 Intrinsic Matrix 계산
+    ultra wide일때 ,DFOV (대각선 시야각)과 해상도 기준으로 Intrinsic Matrix 계산
     - 출력: 4x4 K 행렬 (픽셀 단위)
     """
     dfov_rad = np.radians(dfov_deg)
@@ -21,20 +21,6 @@ def compute_K_from_dfov(dfov_deg, width, height):
 
     return K
 
-def scale_K(K, orig_width, orig_height, new_width, new_height):
-    """
-    입력 해상도 기준으로 Intrinsic Matrix 리스케일
-    """
-    scale_x = new_width / orig_width
-    scale_y = new_height / orig_height
-
-    K_scaled = K.copy()
-    K_scaled[0, 0] *= scale_x  # fx
-    K_scaled[0, 2] *= scale_x  # cx
-    K_scaled[1, 1] *= scale_y  # fy
-    K_scaled[1, 2] *= scale_y  # cy
-
-    return K_scaled
 
 if __name__ == "__main__":
     dfov = 120                 # 대각선 시야각 -> 해당 폰 스펙 참존존
@@ -47,9 +33,4 @@ if __name__ == "__main__":
     K_original = compute_K_from_dfov(dfov, orig_width, orig_height)
     print("원본 해상도 기준 K:\n", K_original)
 
-    # 640x192 해상도 기준으로 리스케일
-    K_scaled = scale_K(K_original, orig_width, orig_height, target_width, target_height)
-    print("\n리스케일된 K (640x192 기준):\n", K_scaled)
-
     np.savetxt("origin_intrinsics.txt", K_original, fmt="%.8f")
-    np.savetxt("scaled_intrinsics.txt", K_scaled, fmt="%.8f")

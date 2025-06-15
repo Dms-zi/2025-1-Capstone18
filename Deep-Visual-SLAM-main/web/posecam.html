@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>TensorFlow.js 모델 예측</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    #image-input { display: block; margin-bottom: 10px; }
+    #video { display: block; margin-bottom: 10px; }
+    #canvas { border: 1px solid #ccc; margin-bottom: 10px; }
+    #result { border: 1px solid #ddd; padding: 10px; background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>TensorFlow.js 모델 예측</h1>
+  <!-- 이미지 업로드 -->
+  <input type="file" id="image-input" accept="image/*" />
+  <!-- 웹캠 버튼 -->
+  <button id="webcam-btn">웹캠 켜기</button>
+  <!-- 웹캠 영상 -->
+  <video id="video" width="320" height="240" autoplay playsinline></video>
+  <!-- 캔버스 (예측 결과 시각화) -->
+  <canvas id="canvas" width="320" height="240"></canvas>
+  <!-- 예측 결과 -->
+  <div id="result">결과가 여기에 표시됩니다.</div>
+  <!-- TensorFlow.js 불러오기 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <script type="module" src="./modules/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
+<div id="three-container"></div>
+</body>
+</html>

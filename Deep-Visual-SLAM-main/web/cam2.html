@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebCam</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="./styles/main2.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgpu/dist/tf-backend-webgpu.js"></script> -->
+    <!-- <script type="text/javascript" src="./modules/live.js"></script> -->
+    <!-- <script src="./modules/three.js/three.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script> -->
+    <!-- <script type="module" src="./modules/camera.js"></script> -->
+    <script type="module" src="./modules/main.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-row">
+        <div class="video-container">
+          <video id="video" autoplay playsinline></video>
+          <canvas id="canvas"></canvas>
+        </div>
+        <div class="video-container">
+          <canvas id="predictCanvas"></canvas>
+        </div>
+      </div>
+      <div class="bottom-row">
+        <div class="bottom-container">
+          <canvas id="renderCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+    <button id="switchCam">카메라 전환</button>
+
+    
+    <!-- <script type="module" src="./modules/tf_raw.js"></script> -->
+    
+    <!-- <script type="module" src="./modules/ar_manager.js"></script> -->
+
+  </body>
+</html>

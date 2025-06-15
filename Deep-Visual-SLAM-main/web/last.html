@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=256, initial-scale=1.0">
+    <title>Deep Visual SLAM - Depth Estimation</title>
+    <link rel="stylesheet" href="styles/main3.css">
+</head>
+<body>
+    <div class="container">
+        <div class="video-container">
+            <video id="video" width="320" height="240" autoplay playsinline></video>
+        </div>
+        <div class="result-container">
+            <video controls width="640" height="360">
+            <source src="/results/last.mp4?ts=<?=Date.now()?>" type="video/mp4">
+  브라우저가 video 태그를 지원하지 않습니다.
+</video>
+        </div>
+        <div class="controls">
+            <button id="startButton">카메라 시작</button>
+            <button id="stopButton" disabled>카메라 중지</button>
+            <button id="uploadButton" disabled>업로드</button>
+        </div>
+    </div>
+    <script>
+    let stream = null;
+    let recording = false;
+    let frames = [];
+    let captureInterval = null;
+    const video = document.getElementById('video');
+    const resultVideo = document.getElementById('resultVideo');
+    const startButton = document.getElementById('startButton');
+    const stopButton = document.getElementById('stopButton');
+    const uploadButton = document.getElementById('uploadButton');
+
+    // 1. 카메라 시작
+    startButton.addEventListener('click', async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 1920, height: 1080, facingMode: 'environment' }
+            });
+            video.srcObject = stream;
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            uploadButton.disabled = true;
+            frames = [];
+            recording = true;
+
+            // 60fps로 프레임 캡처
+            const canvas = document.createElement('canvas');
+            canvas.width = 1920;
+            canvas.height = 1080;
+            const ctx = canvas.getContext('2d');
+            captureInterval = setInterval(() => {
+                if (!recording) return;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(blob => {
+                    if (blob) frames.push(blob);
+                }, 'image/jpeg', 0.92);
+            }, 1000 / 60); // 60fps
+        } catch (err) {
+            alert('카메라에 접근할 수 없습니다.');
+        }
+    });
+
+    // 2. 카메라 중지
+    stopButton.addEventListener('click', () => {
+        recording = false;
+        if (captureInterval) clearInterval(captureInterval);
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            video.srcObject = null;
+        }
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        uploadButton.disabled = frames.length === 0;
+    });
+
+    // 3. 업로드 버튼
+    uploadButton.addEventListener('click', async () => {
+    if (frames.length === 0) {
+        alert('저장된 프레임이 없습니다.');
+        return;
+    }
+    const seq = prompt('시퀀스 폴더명을 입력하세요 (예: 00)', '00') || '00';
+    const formData = new FormData();
+    frames.forEach((blob, idx) => {
+        const filename = String(idx).padStart(5, '0') + '.jpg';
+        formData.append('frames', blob, filename);
+    });
+    formData.append('seq', seq);
+    // predict.py가 끝난 뒤에만 응답이 옴!
+    const res = await fetch('/upload_sequence', { method: 'POST', body: formData });
+    const data = await res.json();
+    alert('업로드 및 분석 완료: ' + data.files + '개');
+    uploadButton.disabled = true;
+    frames = [];
+
+    // predict.py가 끝났으니 바로 결과 영상 갱신
+    resultVideo.src = '/results/last.mp4?ts=' + Date.now();
+});
+
+    // 프레임이 있을 때만 업로드 버튼 활성화
+    video.addEventListener('play', () => {
+        uploadButton.disabled = frames.length === 0;
+    });
+    </script>
+</body>
+</html>

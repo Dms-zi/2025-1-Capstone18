@@ -14,7 +14,7 @@ This project aims to implement a lightweight Visual-SLAM system using only a mon
   [View Result on Google Drive](https://drive.google.com/file/d/19z45ElBhBX0xBy3EpUCI0i3cUZ-zqkKT/view?usp=sharing)
 
 - Web-based SLAM Demo (`web/server.js`):  
-  [View Web Inference Demo]
+  [View Web Inference Demo](https://drive.google.com/file/d/13X4WIR0-OcLtN9JthMJIPYfslfYa1oDa/view?usp=sharing)
 
 ## Project Repository
 - Original Repository: [https://github.com/chansoopark98/Deep-Visual-SLAM](https://github.com/chansoopark98/Deep-Visual-SLAM)  
